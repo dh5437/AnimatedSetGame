@@ -10,8 +10,8 @@ import Testing
 
 struct AnimatedSetGameTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test func test_AnimatedSetGameModel_variable_shouldBeWhat() async throws {
+        
+        
     }
-
 }
