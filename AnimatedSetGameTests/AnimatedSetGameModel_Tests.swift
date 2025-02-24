@@ -2,7 +2,7 @@
 //  AnimatedSetGameModel_Tests.swift
 //  AnimatedSetGameTests
 //
-//  Created by 김도현 on 2/22/25.
+//  Created by 김도현 on 2/24/25.
 //
 
 import Testing
@@ -10,16 +10,24 @@ import Testing
 
 struct AnimatedSetGameModel_Tests {
     
-    var model = AnimatedSetGameModel()
-    var vm = AnimatedSetGameViewModel()
-
-    @Test func test_AnimatedSetGameModel_checkDeckIsSet_shouldBeTrue() async throws {
+    //    @Test func test_AnimatedSetGameModel_checkDeckIsSet_shouldBeTrue() async throws {
+    //        // Given
+    //        vm.createDeck()
+    //        let deck = vm.deck
+    //        // When
+    //        let isDeckSet = model.checkDeckIsSet(deck: deck)
+    //        // Then
+    //        #expect(isDeckSet == true)
+    //    }
+    @Test func test_Model_createGame_shouldInitializeDeck() async throws {
         // Given
-        vm.createDeck()
-        let deck = vm.deck
+        var model = AnimatedSetGameModel()
+        
         // When
-        let isDeckSet = model.checkDeckIsSet(deck: deck)
+        model.createGame()
+        
         // Then
-        #expect(isDeckSet == true)
+        #expect(!model.deck.isEmpty)
+        #expect(model.showingCards.count == 12)
     }
 }

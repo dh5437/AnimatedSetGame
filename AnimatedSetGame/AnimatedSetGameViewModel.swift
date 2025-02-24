@@ -15,12 +15,19 @@ class AnimatedSetGameViewModel: ObservableObject {
         return animatedSetGameModel.deck
     }
     
-    func createDeck() {
-        animatedSetGameModel.createDeck()
+    var showingCards: [Card] {
+        return animatedSetGameModel.showingCards
     }
     
-    func checkDeckIsSet(deck: Array<Card>) -> Bool {
-        animatedSetGameModel.checkDeckIsSet(deck: deck)
+    func createGame() {
+        animatedSetGameModel.createGame()
     }
     
+    func addThreeMoreCardsToShowingCards() {
+        animatedSetGameModel.addThreeCardsToShowingCards()
+    }
+    
+    func chooseCard(_ card: Card) {
+        animatedSetGameModel.chooseCard(card)
+    }
 }

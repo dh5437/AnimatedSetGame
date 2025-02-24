@@ -7,17 +7,63 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "789BA242-240A-40FE-9B50-A5B39407F8A4"
-            shouldBeEnabled = "No"
+            uuid = "C78BA540-2BD7-4084-8906-8E3230962FF3"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AnimatedSetGame/AnimatedSetGameModel.swift"
+            filePath = "AnimatedSetGameTests/AnimatedSetGameModel_Tests.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
-            landmarkName = "checkDeckIsSet(deck:)"
-            landmarkType = "7">
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "AnimatedSetGameModel_Tests"
+            landmarkType = "14">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0AEB6A12-F6B5-4894-B7EA-3F0254997D54"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AnimatedSetGameTests/AnimatedSetGameModel_Tests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "AnimatedSetGameModel_Tests"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "0AEB6A12-F6B5-4894-B7EA-3F0254997D54 - b8cac850164c3b55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "AnimatedSetGameTests.AnimatedSetGameModel_Tests.test_Model_createGame_shouldInitializeDeck() async throws -&gt; ()"
+                  moduleName = "AnimatedSetGameTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dhkim/dhkim/coding/visionpro/cs193p_stanford/AnimatedSetGame/AnimatedSetGameTests/AnimatedSetGameModel_Tests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22">
+               </Location>
+               <Location
+                  uuid = "0AEB6A12-F6B5-4894-B7EA-3F0254997D54 - c981d2ebeca1a34d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for AnimatedSetGameTests.AnimatedSetGameModel_Tests.test_Model_createGame_shouldInitializeDeck() async throws -&gt; ()"
+                  moduleName = "AnimatedSetGameTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dhkim/dhkim/coding/visionpro/cs193p_stanford/AnimatedSetGame/AnimatedSetGameTests/AnimatedSetGameModel_Tests.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "22"
+                  endingLineNumber = "22">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

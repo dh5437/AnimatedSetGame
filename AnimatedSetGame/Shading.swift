@@ -12,7 +12,7 @@ struct Shading: ViewModifier {
     var color: AnimatedSetGameModel.Card.Color
     
     func body(content: Content) -> some View {
-        let bodyColor = color.resolve()
+        let bodyColor = color.toSwiftUIColor()
         switch shading {
         case .Solid:
             content

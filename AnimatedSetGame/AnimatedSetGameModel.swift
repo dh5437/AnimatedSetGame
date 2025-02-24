@@ -11,33 +11,71 @@ import SwiftUI
 struct AnimatedSetGameModel {
     private(set) var deck: [Card] = []
     private(set) var showingCards: [Card] = []
+    private(set) var disCardedCards: [Card] = []
     
-    mutating func createDeck() {
+    mutating func createGame() {
+        if !deck.isEmpty || !showingCards.isEmpty {
+            deck.removeAll()
+            showingCards.removeAll()
+        }
+        
+        createDeck()
+        createShowingCards()
+    }
+    
+    private mutating func createDeck() {
         for shape in Card.Shape.allCases {
             for numberOfContents in Card.NumberOfContents.allCases {
                 for color in Card.Color.allCases {
                     for shading in Card.Shading.allCases {
                         let cardKey = "\(shape)-\(numberOfContents)-\(color)-\(shading)"
+                        let newCard = Card(id: cardKey, content: shape, numberOfContents: numberOfContents, color: color, shading: shading)
                         
-                        deck.append(Card(id: cardKey, content: shape, numberOfContents: numberOfContents, color: color, shading: shading))
+                        if checkDeckIsSet(newCard) {
+                            deck.append(newCard)
+                        } else {
+                            print("Error")
+                        }
                     }
                 }
             }
         }
+        deck.shuffle()
     }
     
-    func checkDeckIsSet(deck: Array<Card>) -> Bool {
-        guard !deck.isEmpty else { return false }
+    private func checkDeckIsSet(_ newCard: Card) -> Bool {
+        guard !newCard.id.isEmpty else { return false }
         
-        let setDeck = Set(deck.map { $0.id })
-        print(setDeck.count)
-        return setDeck.count == deck.count
+        return deck.filter { $0.id == newCard.id }.count == 0
+    }
+    
+    private mutating func createShowingCards() {
+        guard !deck.isEmpty else { return }
+        
+        for _ in 0..<12 {
+            guard let cardToShow = deck.popLast() else { continue }
+            showingCards.append(cardToShow)
+        }
+    }
+    
+    mutating func addThreeCardsToShowingCards() {
+        guard !deck.isEmpty else { return }
+        for _ in 0..<3 {
+            guard let cardToShow = deck.popLast() else { continue }
+            showingCards.append(cardToShow)
+        }
+    }
+    
+    mutating func chooseCard(_ card: Card) {
+        if let index = showingCards.firstIndex(of: card) {
+            showingCards[index].isSelected.toggle()
+        }
     }
     
     struct Card: Identifiable, Hashable {
         var id: String
         var isSelected: Bool = false
-        var isMatched: CardMatched = .UnDetermined
+        var isMatched: Bool = false
         
         var content: Shape
         var numberOfContents: NumberOfContents
@@ -66,8 +104,8 @@ struct AnimatedSetGameModel {
     }
 }
 
-extension AnimatedSetGameModel.Card.Color: ShapeStyle {
-    func resolve() -> Color {
+extension AnimatedSetGameModel.Card.Color {
+    func toSwiftUIColor() -> Color {
         switch self {
         case .Red: return Color.red
         case .Green: return Color.green
