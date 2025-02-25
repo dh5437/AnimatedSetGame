@@ -19,6 +19,10 @@ class AnimatedSetGameViewModel: ObservableObject {
         return animatedSetGameModel.showingCards
     }
     
+    var disCardedCards: [Card] {
+        return animatedSetGameModel.disCardedCards
+    }
+    
     func createGame() {
         animatedSetGameModel.createGame()
     }
@@ -29,5 +33,9 @@ class AnimatedSetGameViewModel: ObservableObject {
     
     func chooseCard(_ card: Card) {
         animatedSetGameModel.chooseCard(card)
+    }
+    
+    func discardCard(_ card: Card) {
+        animatedSetGameModel.discardCard(card)
     }
 }

@@ -19,8 +19,7 @@ struct AnimatedSetGameView: View {
             cards
             
             Spacer()
-            bottomBar
-                .padding()
+            BottomContentsView(viewModel: viewModel, cardDeckNamespace: cardDeckNamespace, discardedCardsNamespace: discardedCardsNamespace)
         }
         .padding()
         .onAppear {
@@ -32,39 +31,21 @@ struct AnimatedSetGameView: View {
         AspectVGrid(items: viewModel.showingCards, contentRatio: 2/3, content: { card in
             CardView(card: card)
                     .aspectRatio(2/3, contentMode: .fit)
+                    .matchedGeometryEffect(id: card.id, in: discardedCardsNamespace)
+                    .matchedGeometryEffect(id: card.id, in: cardDeckNamespace)
+                    .transition(.identity)
                     .onTapGesture {
-                        viewModel.chooseCard(card)
+                        withAnimation(.easeInOut) {
+                            viewModel.chooseCard(card)
+                        }
                     }
                     .accessibilityIdentifier("CardElement")
             }
         )
         .frame(maxWidth: .infinity, maxHeight: 400)
     }
-    
-    var bottomBar: some View {
-        HStack {
-            Button {
-                viewModel.addThreeMoreCardsToShowingCards()
-            } label: {
-                Text(
-                    """
-                    Add 3
-                    More Cards!
-                    """
-                )
-                    .setGameButtonize()
-            }
-            .accessibilityIdentifier("Add3MoreCardsButton")
-            
-            Button {
-                viewModel.createGame()
-            } label: {
-                Text("Start New Game!")
-                    .setGameButtonize()
-            }
-            .accessibilityIdentifier("StartNewGameButton")
-        }
-    }
+    @Namespace private var discardedCardsNamespace
+    @Namespace private var cardDeckNamespace
 }
 
 #Preview {
