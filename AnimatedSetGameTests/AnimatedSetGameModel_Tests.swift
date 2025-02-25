@@ -11,17 +11,8 @@ import Testing
 struct AnimatedSetGameModel_Tests {
     var model = AnimatedSetGameModel()
     
-    //    @Test func test_AnimatedSetGameModel_checkDeckIsSet_shouldBeTrue() async throws {
-    //        // Given
-    //        vm.createDeck()
-    //        let deck = vm.deck
-    //        // When
-    //        let isDeckSet = model.checkDeckIsSet(deck: deck)
-    //        // Then
-    //        #expect(isDeckSet == true)
-    //    }
     @MainActor
-    @Test mutating func test_AnimatedSetGameModel_createGame_shouldInitializeDeck() async throws {
+    @Test mutating func test_AnimatedSetGameModel_createGame_shouldCreateGame() async throws {
         // Given
         // When
         model.createGame()
@@ -29,6 +20,31 @@ struct AnimatedSetGameModel_Tests {
         // Then
         #expect(!model.deck.isEmpty)
         #expect(model.showingCards.count == 12)
+    }
+    
+    @MainActor
+    @Test mutating func test_AnimatedSetGameModel_createGame_shouldInitializeDeck() async throws {
+        // Given
+        model.createGame()
+        // When
+        let foundCards = model.findMatchingCards(in: model.showingCards)
+        guard let matchedCards = foundCards else {
+            #expect(foundCards == nil)
+            return
+        }
+        #expect(matchedCards.count == 3)
+        matchedCards.forEach({ card in
+            model.chooseCard(card)
+        })
+        #expect(model.disCardedCards.count == 3)
+        
+        model.createGame()
+        
+        // Then
+        #expect(!model.deck.isEmpty)
+        #expect(model.showingCards.count == 12)
+        #expect(model.disCardedCards.isEmpty)
+        #expect(model.score == 0)
     }
         
     @MainActor
@@ -53,7 +69,7 @@ struct AnimatedSetGameModel_Tests {
         // When
         let initialCount = model.showingCards.count
         
-        let randomCount = Int.random(in: 0..<model.deck.count)
+        let randomCount = Int.random(in: 0..<model.deck.count / 3)
         
         for _ in 0..<randomCount {
             model.addThreeCardsToShowingCards()
@@ -96,11 +112,11 @@ struct AnimatedSetGameModel_Tests {
         }
         
         let randomNumber = Int.random(in: 0..<model.showingCards.count)
-        #expect(!model.showingCards[randomNumber].isSelected)
+        #expect(model.showingCards[randomNumber].isMatched == .NotMatched)
         
         model.chooseCard(model.showingCards[randomNumber])
         // Then
-        #expect(model.showingCards[randomNumber].isSelected)
+        #expect(model.showingCards[randomNumber].isMatched == .Selected)
     }
     
     @MainActor
@@ -119,13 +135,13 @@ struct AnimatedSetGameModel_Tests {
             let randomNumber = Int.random(in: 0..<model.showingCards.count)
                         
             model.chooseCard(model.showingCards[randomNumber])
-            #expect(model.showingCards[randomNumber].isSelected)
+            #expect(model.showingCards[randomNumber].isMatched == .Selected)
             model.chooseCard(model.showingCards[randomNumber])
-            #expect(!model.showingCards[randomNumber].isSelected)
+            #expect(model.showingCards[randomNumber].isMatched == .NotMatched)
         }
         
         // Then
-        #expect(!model.showingCards[Int.random(in: 0..<model.showingCards.count)].isSelected)
+        #expect(model.showingCards[Int.random(in: 0..<model.showingCards.count)].isMatched == .NotMatched)
     }
     
     @MainActor
@@ -163,6 +179,8 @@ struct AnimatedSetGameModel_Tests {
         matchedCards.forEach({ card in
             model.chooseCard(card)
         })
+        #expect(model.score == 3)
+        #expect(model.areCardsMatched == .Matched)
         #expect(model.showingCards.count == initialCount)
         #expect(model.disCardedCards.count == 3)
     }

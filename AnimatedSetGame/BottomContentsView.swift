@@ -19,7 +19,7 @@ struct BottomContentsView: View {
     }
     var newGameButton: some View {
         Button {
-            withAnimation(.spring(duration: 1, bounce: 0.5)) {
+            withAnimation(.spring(duration: 0.8, bounce: 0.3)) {
                 viewModel.createGame()
             }
 
@@ -31,25 +31,24 @@ struct BottomContentsView: View {
     }
     
     var cardDeckNamespace: Namespace.ID
+    @ViewBuilder
     var bottomDecks: some View {
         ZStack {
             ForEach(viewModel.deck, id: \.self.id) { card in
                 CardView(card: card)
                     .matchedGeometryEffect(id: card.id, in: cardDeckNamespace)
             }
-            HStack(spacing: 5) {
-                Image(systemName: "plus.circle")
-                Text("3")
-            }
+            Text("\(viewModel.deck.count)")
             .font(.system(size: 24, weight: .bold))
             .foregroundColor(.white)
         }
         .frame(maxWidth: deckWidth, maxHeight: deckWidth / aspectRatio)
         .onTapGesture {
-            withAnimation(.spring()) {
+            withAnimation(.spring(duration: 0.5, bounce: 0.4)) {
                 viewModel.addThreeMoreCardsToShowingCards()
             }
         }
+        .accessibilityIdentifier("Add3MoreCardsButton")
     }
     
     var discardedCardsNamespace: Namespace.ID
@@ -64,7 +63,7 @@ struct BottomContentsView: View {
         .frame(maxWidth: deckWidth, maxHeight: deckWidth / aspectRatio)
     }
     
-    private let deckWidth: CGFloat = 80
+    private let deckWidth: CGFloat = 60
     private let aspectRatio: CGFloat = 2/3
 }
 

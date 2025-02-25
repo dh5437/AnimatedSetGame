@@ -11,12 +11,18 @@ struct AnimatedSetGameModel {
     private(set) var deck: [Card] = []
     private(set) var showingCards: [Card] = []
     private(set) var disCardedCards: [Card] = []
+    private(set) var score: Int = 0
+    private(set) var areCardsMatched: Card.CardMatched = .Selected
     
     mutating func createGame() {
-        if !deck.isEmpty || !showingCards.isEmpty {
+        if !deck.isEmpty || !showingCards.isEmpty || !disCardedCards.isEmpty {
             deck.removeAll()
             showingCards.removeAll()
+            disCardedCards.removeAll()
         }
+        
+        areCardsMatched = .Selected
+        score = 0
         
         createDeck()
         createShowingCards()
@@ -75,6 +81,7 @@ struct AnimatedSetGameModel {
             } else if showingCards[index].isMatched == .Selected {
                 showingCards[index].isMatched = .NotMatched
             }
+            areCardsMatched = .Selected
         } else {
             print("Error in choosing card with id: \(card.id)")
             return
@@ -91,6 +98,7 @@ struct AnimatedSetGameModel {
                 if let index = showingCards.firstIndex(of: card) {
                     showingCards[index].isMatched = .Matched
                     discardCard(showingCards[index])
+                    areCardsMatched = .Matched
                 } else {
                     print("Error in selecting card with id: \(card.id)")
                 }
@@ -98,14 +106,17 @@ struct AnimatedSetGameModel {
             if showingCards.count < 12 {
                 addThreeCardsToShowingCards()
             }
+            score += 3
         } else {
             selectedCards.forEach { card in
                 if let index = showingCards.firstIndex(of: card) {
                     showingCards[index].isMatched = .NotMatched
+                    areCardsMatched = .NotMatched
                 } else {
                     print("Error in unselecting card with id: \(card.id)")
                 }
             }
+            score -= 1
         }
     }
     

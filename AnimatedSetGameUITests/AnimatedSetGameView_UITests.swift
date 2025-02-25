@@ -22,7 +22,7 @@ final class AnimatedSetGameView_UITests: XCTestCase {
         // Given
         // When
         
-        let cardElements = app.otherElements.matching(identifier: "CardElement").allElementsBoundByIndex
+        let cardElements = app.otherElements.matching(NSPredicate(format: "identifier BEGINSWITH %@", "CardElement_")).allElementsBoundByIndex
         if let lastCard = cardElements.last {
             let exists = lastCard.waitForExistence(timeout: 5)
             XCTAssertTrue(exists)
@@ -35,17 +35,16 @@ final class AnimatedSetGameView_UITests: XCTestCase {
     
     func test_AnimatedSetGameView_AddThreeCardsButton_ShouldAddThreeCardsToGameWhenTapped() throws {
         // Given
-        let cardElements = app.otherElements.matching(identifier: "CardElement").allElementsBoundByIndex
+        let cardElements = app.otherElements.matching(NSPredicate(format: "identifier BEGINSWITH %@", "CardElement_")).allElementsBoundByIndex
         if let lastCard = cardElements.last {
             let exists = lastCard.waitForExistence(timeout: 5)
             XCTAssertTrue(exists)
         }
         
-        print("cardElement: \(cardElements)")
-        
         // When
-        app.buttons["Add3MoreCardsButton"].tap()
-        let addedCardElements = app.otherElements.matching(identifier: "CardElement").allElementsBoundByIndex
+        app.images["Add3MoreCardsButton"].tap()
+        
+        let addedCardElements = app.otherElements.matching(NSPredicate(format: "identifier BEGINSWITH %@", "CardElement_")).allElementsBoundByIndex
         if let lastAddedCard = addedCardElements.last {
             let exists = lastAddedCard.waitForExistence(timeout: 3)
             XCTAssertTrue(exists)
@@ -57,7 +56,9 @@ final class AnimatedSetGameView_UITests: XCTestCase {
     
     func test_AnimatedSetGameView_NewGameButton_ShouldCreateNewGame() throws {
         // Given
-        let cardElements = app.otherElements.containing(.any, identifier: "CardElement").allElementsBoundByIndex
+        let cardElements = app.otherElements.matching(NSPredicate(format: "identifier BEGINSWITH %@", "CardElement_")).allElementsBoundByIndex
+        
+        let oldCardIDs = cardElements.map { $0.identifier }
         
         if let lastCard = cardElements.last {
             let exists = lastCard.waitForExistence(timeout: 5)
@@ -65,18 +66,21 @@ final class AnimatedSetGameView_UITests: XCTestCase {
             print("\(lastCard.identifier)")
         }
         
-        let oldCardIDs = cardElements.map { $0.identifier }
+        print("oldCardIDs: \(oldCardIDs.count)")
         
         // When
         app.buttons["StartNewGameButton"].tap()
-        let newCardElements = app.otherElements.matching(identifier: "CardElement").allElementsBoundByIndex
+        sleep(3)
+        let newCardElements = app.otherElements.matching(NSPredicate(format: "identifier BEGINSWITH %@", "CardElement")).allElementsBoundByIndex
+        
+        let newCardIDs = newCardElements.map { $0.identifier }
+        print("newCardIDs: \(newCardIDs.count)")
         
         if let lastCard = newCardElements.last {
             let exists = lastCard.waitForExistence(timeout: 5)
             XCTAssertTrue(exists)
+            print("\(lastCard.identifier)")
         }
-        
-        let newCardIDs = newCardElements.map { $0.identifier }
             
         // Then
         
@@ -85,5 +89,6 @@ final class AnimatedSetGameView_UITests: XCTestCase {
         
         XCTAssertNotEqual(Set(oldCardIDs), Set(newCardIDs), "New game should have different cards than the previous game")
     }
+    
     
 }

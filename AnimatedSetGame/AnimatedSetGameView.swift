@@ -16,15 +16,52 @@ struct AnimatedSetGameView: View {
             Text("Animated Set Game")
                 .font(.largeTitle)
                 .fontWeight(.bold)
+                .padding(0)
+            cardMatched
             cards
             
             Spacer()
             BottomContentsView(viewModel: viewModel, cardDeckNamespace: cardDeckNamespace, discardedCardsNamespace: discardedCardsNamespace)
         }
-        .padding()
+        .padding(.horizontal)
         .onAppear {
             viewModel.createGame()
         }
+    }
+    
+    var cardMatched: some View {
+        HStack(alignment: .center ,spacing: 10) {
+            VStack(alignment: .center) {
+                Text("Score")
+                Text("\(viewModel.score)")
+            }
+            .font(.system(size: 16, weight: .bold))
+            .foregroundStyle(.white)
+            .padding()
+            .background(.gray)
+            .frame(height: 60)
+            .clipShape(
+                Capsule()
+            )
+            
+            Group {
+                switch viewModel.areCardsMatched {
+                case .Selected:
+                    Text("Selecting cards...")
+                        .textify(foregroundColor: .white, backgroundColor: .black)
+                case .NotMatched:
+                    Text("Cards are not set!")
+                        .textify(foregroundColor: .red, backgroundColor: Color(#colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)))
+                case .Matched:
+                    Text("Cards are set!")
+                        .textify(foregroundColor: .green, backgroundColor: Color(#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)))
+                }
+            }
+            .frame(height: 60)
+        }
+        .frame(maxWidth: .infinity, maxHeight: 60)
+        .padding(.horizontal)
+        .padding(.bottom, 10)
     }
     
     var cards: some View {
@@ -35,11 +72,11 @@ struct AnimatedSetGameView: View {
                     .matchedGeometryEffect(id: card.id, in: cardDeckNamespace)
                     .transition(.identity)
                     .onTapGesture {
-                        withAnimation(.easeInOut) {
+                        withAnimation(.spring(duration: 0.5, bounce: 0.4)) {
                             viewModel.chooseCard(card)
                         }
                     }
-                    .accessibilityIdentifier("CardElement")
+                    .accessibilityIdentifier("CardElement_\(card.id)")
             }
         )
         .frame(maxWidth: .infinity, maxHeight: 400)

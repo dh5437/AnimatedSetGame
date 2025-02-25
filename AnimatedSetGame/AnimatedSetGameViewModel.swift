@@ -23,6 +23,14 @@ class AnimatedSetGameViewModel: ObservableObject {
         return animatedSetGameModel.disCardedCards
     }
     
+    var areCardsMatched: Card.CardMatched {
+        return animatedSetGameModel.areCardsMatched
+    }
+    
+    var score: Int {
+        return animatedSetGameModel.score
+    }
+    
     func createGame() {
         animatedSetGameModel.createGame()
     }
@@ -37,5 +45,9 @@ class AnimatedSetGameViewModel: ObservableObject {
     
     func discardCard(_ card: Card) {
         animatedSetGameModel.discardCard(card)
+    }
+    
+    func findMatchingCards(_ cards: [Card]) -> [Card]? {
+        animatedSetGameModel.findMatchingCards(in: cards)
     }
 }

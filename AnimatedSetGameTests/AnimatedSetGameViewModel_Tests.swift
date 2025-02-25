@@ -103,11 +103,11 @@ struct AnimatedSetGameViewModel_Tests {
             return
         }
         let randomNumber = Int.random(in: 0..<vm.showingCards.count)
-        #expect(!vm.showingCards[randomNumber].isSelected)
+        #expect(vm.showingCards[randomNumber].isMatched == .NotMatched)
         
         vm.chooseCard(vm.showingCards[randomNumber])
         // Then
-        #expect(vm.showingCards[randomNumber].isSelected)
+        #expect(vm.showingCards[randomNumber].isMatched == .Selected)
     }
     
     @Test func test_AnimatedSetGameViewModel_chooseCard_shouldMakeCardSelected_stress() async throws {
@@ -125,13 +125,13 @@ struct AnimatedSetGameViewModel_Tests {
             let randomNumber = Int.random(in: 0..<vm.showingCards.count)
                         
             vm.chooseCard(vm.showingCards[randomNumber])
-            #expect(vm.showingCards[randomNumber].isSelected)
+            #expect(vm.showingCards[randomNumber].isMatched == .Selected)
             vm.chooseCard(vm.showingCards[randomNumber])
-            #expect(!vm.showingCards[randomNumber].isSelected)
+            #expect(vm.showingCards[randomNumber].isMatched == .NotMatched)
         }
         
         // Then
-        #expect(!vm.showingCards[Int.random(in: 0..<vm.showingCards.count)].isSelected)
+        #expect(vm.showingCards[Int.random(in: 0..<vm.showingCards.count)].isMatched == .NotMatched)
     }
 
 }
